@@ -15,34 +15,32 @@ type StartScreenProps = {
 
 export const StartScreen = ({ handleStart }: StartScreenProps) => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-center text-3xl">Flag Quiz</CardTitle>
-          <CardDescription className="text-gray-800 text-center">
-            Test your knowledge of world flags.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4 ">
+    <Card className="w-full max-w-md ">
+      <CardHeader>
+        <CardTitle className="text-center text-3xl">Flag Quiz</CardTitle>
+        <CardDescription className="text-gray-800 text-center">
+          Test your knowledge of world flags.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4 ">
+        <Button
+          variant="outline"
+          className="py-6 w-full"
+          onClick={() => handleStart()}
+        >
+          All Flags
+        </Button>
+        {CONTINENTS.map((continent) => (
           <Button
+            key={continent}
             variant="outline"
-            onClick={() => handleStart()}
-            className="w-full"
+            className="py-6 w-full"
+            onClick={() => handleStart({ continent })}
           >
-            All Flags
+            {continent}
           </Button>
-          {CONTINENTS.map((continent) => (
-            <Button
-              key={continent}
-              variant="outline"
-              onClick={() => handleStart({ continent })}
-              className="w-full"
-            >
-              {continent}
-            </Button>
-          ))}
-        </CardContent>
-      </Card>
-    </div>
+        ))}
+      </CardContent>
+    </Card>
   );
 };

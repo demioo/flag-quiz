@@ -41,40 +41,38 @@ export function QuestionCard({
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 dark:bg-zinc-950 p-4">
-      <Card className="w-full max-w-2xl">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>
-              Question {questionNumber} of {totalQuestions}
-            </CardTitle>
+    <Card className="w-full max-w-2xl">
+      <CardHeader>
+        <div className="flex justify-between items-center">
+          <CardTitle>
+            Question {questionNumber} of {totalQuestions}
+          </CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col items-center gap-8">
+          <div className="text-9xl">{question.correctCountry.emoji}</div>
+          <p className="text-xl font-medium">
+            Which country does this flag belong to?
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
+            {question.options.map((country) => (
+              <Button
+                key={country.code}
+                variant="outline"
+                size="lg"
+                onClick={() => handleAnswer(country.code)}
+                disabled={isAnswered}
+                className={`h-auto py-4 text-lg ${getButtonClassName(
+                  country.code
+                )}`}
+              >
+                {country.name}
+              </Button>
+            ))}
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col items-center gap-8">
-            <div className="text-9xl">{question.correctCountry.emoji}</div>
-            <p className="text-xl font-medium">
-              Which country does this flag belong to?
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full">
-              {question.options.map((country) => (
-                <Button
-                  key={country.code}
-                  variant="outline"
-                  size="lg"
-                  onClick={() => handleAnswer(country.code)}
-                  disabled={isAnswered}
-                  className={`h-auto py-4 text-lg ${getButtonClassName(
-                    country.code
-                  )}`}
-                >
-                  {country.name}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
