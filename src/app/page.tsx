@@ -8,6 +8,16 @@ import { ResultsScreen } from "@/components/quiz/results-screen";
 
 type GameState = "idle" | "playing" | "answered" | "finished";
 
+type StartQuizParams = {
+  continent?:
+    | "Africa"
+    | "Asia"
+    | "Europe"
+    | "North America"
+    | "Oceania"
+    | "South America";
+};
+
 export default function Home() {
   const [gameState, setGameState] = useState<GameState>("idle");
   const [quiz, setQuiz] = useState<QuizQuestion[]>([]);
@@ -15,8 +25,8 @@ export default function Home() {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
 
-  const startQuiz = () => {
-    const newQuiz = generateQuiz();
+  const startQuiz = ({ continent }: StartQuizParams = {}) => {
+    const newQuiz = generateQuiz({ continent });
     setQuiz(newQuiz);
     setGameState("playing");
     setCurrentQuestionIndex(0);
@@ -55,7 +65,7 @@ export default function Home() {
       <ResultsScreen
         score={score}
         totalQuestions={quiz.length}
-        handlePlayAgain={startQuiz}
+        handlePlayAgain={() => setGameState("idle")}
       />
     );
   }

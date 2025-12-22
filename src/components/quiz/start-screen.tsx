@@ -4,11 +4,13 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardFooter,
+  CardContent,
 } from "@/components/ui/card";
+import { CONTINENTS } from "@/lib/constants";
+import { Continent } from "@/types";
 
 type StartScreenProps = {
-  handleStart: () => void;
+  handleStart: ({ continent }?: { continent?: Continent }) => void;
 };
 
 export const StartScreen = ({ handleStart }: StartScreenProps) => {
@@ -21,11 +23,25 @@ export const StartScreen = ({ handleStart }: StartScreenProps) => {
             Test your knowledge of world flags.
           </CardDescription>
         </CardHeader>
-        <CardFooter>
-          <Button variant="outline" onClick={handleStart} className="w-full">
-            Play
+        <CardContent className="space-y-4 ">
+          <Button
+            variant="outline"
+            onClick={() => handleStart()}
+            className="w-full"
+          >
+            All Countries
           </Button>
-        </CardFooter>
+          {CONTINENTS.map((continent) => (
+            <Button
+              key={continent}
+              variant="outline"
+              onClick={() => handleStart({ continent })}
+              className="w-full"
+            >
+              {continent}
+            </Button>
+          ))}
+        </CardContent>
       </Card>
     </div>
   );
