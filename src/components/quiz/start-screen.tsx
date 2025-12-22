@@ -29,7 +29,7 @@ export const StartScreen = ({ handleStart }: StartScreenProps) => {
             onClick={() => handleStart()}
             className="w-full"
           >
-            All Countries
+            All Flags
           </Button>
           {CONTINENTS.map((continent) => (
             <Button
