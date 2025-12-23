@@ -17,7 +17,7 @@ export const StartScreen = ({ handleStart }: StartScreenProps) => {
   return (
     <Card className="bg-zinc-50 border-0 shadow-none max-w-2xl">
       <CardHeader>
-        <CardTitle className="text-center text-3xl">
+        <CardTitle className="text-center text-5xl">
           <h1>World Flags Quiz</h1>
         </CardTitle>
         <CardDescription className="text-gray-800 text-center text-lg">
