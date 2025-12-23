@@ -10,16 +10,18 @@ import { CONTINENTS } from "@/lib/constants";
 import { Continent } from "@/types";
 
 type StartScreenProps = {
-  handleStart: ({ continent }?: { continent?: Continent }) => void;
+  handleStart: (options?: { continent?: Continent }) => void;
 };
 
 export const StartScreen = ({ handleStart }: StartScreenProps) => {
   return (
-    <Card className="w-full max-w-md ">
+    <Card className="bg-zinc-50 border-0 shadow-none max-w-2xl">
       <CardHeader>
-        <CardTitle className="text-center text-3xl">Flag Quiz</CardTitle>
-        <CardDescription className="text-gray-800 text-center">
-          Test your knowledge of world flags.
+        <CardTitle className="text-center text-3xl">
+          <h1>World Flags Quiz</h1>
+        </CardTitle>
+        <CardDescription className="text-gray-800 text-center text-lg">
+          Test your knowledge of flags from around the world!
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 ">

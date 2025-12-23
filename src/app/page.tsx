@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { generateQuiz, type QuizQuestion } from "@/lib/utils";
 import { StartScreen } from "@/components/quiz/start-screen";
 import { QuestionCard } from "@/components/quiz/question-card";
@@ -44,8 +44,12 @@ export default function Home() {
     if (correct) {
       setScore(score + 1);
     }
+  };
 
-    setTimeout(() => {
+  useEffect(() => {
+    if (gameState !== "answered") return;
+
+    const timeOutId = setTimeout(() => {
       if (currentQuestionIndex < quiz.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
         setSelectedAnswer(null);
@@ -53,8 +57,10 @@ export default function Home() {
       } else {
         setGameState("finished");
       }
-    }, 1500);
-  };
+    }, 1250);
+
+    return () => clearTimeout(timeOutId);
+  }, [gameState, currentQuestionIndex, quiz.length]);
 
   if (gameState === "idle") {
     return <StartScreen handleStart={startQuiz} />;
