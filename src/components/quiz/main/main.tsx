@@ -2,8 +2,8 @@
 import { QuestionCard } from "@/components/quiz/question-card/question-card";
 import { ResultsScreen } from "@/components/quiz/results-screen/results-screen";
 import { StartScreen } from "@/components/quiz/start-screen/start-screen";
-import { generateQuiz, type QuizQuestion } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { quizMachine } from "@/machines/quiz-machine";
+import { useMachine } from "@xstate/react";
 
 type GameState = "idle" | "playing" | "answered" | "finished";
 
@@ -18,71 +18,40 @@ type StartQuizParams = {
 };
 
 export const Main = () => {
-  const [gameState, setGameState] = useState<GameState>("idle");
-  const [quiz, setQuiz] = useState<QuizQuestion[]>([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [state, send] = useMachine(quizMachine);
+  const { quiz, index, score, selected } = state.context;
+  const currentQuestion = quiz[index];
 
-  const startQuiz = ({ continent }: StartQuizParams = {}) => {
-    const newQuiz = generateQuiz({ continent });
-    setQuiz(newQuiz);
-    setGameState("playing");
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setSelectedAnswer(null);
-  };
-
-  const handleAnswer = (countryCode: string) => {
-    const currentQuestion = quiz[currentQuestionIndex];
-    const correct = currentQuestion.correctCountry.code === countryCode;
-
-    setSelectedAnswer(countryCode);
-    setGameState("answered");
-
-    if (correct) {
-      setScore(score + 1);
-    }
-  };
-
-  useEffect(() => {
-    if (gameState !== "answered") return;
-
-    const timeOutId = setTimeout(() => {
-      if (currentQuestionIndex < quiz.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setSelectedAnswer(null);
-        setGameState("playing");
-      } else {
-        setGameState("finished");
-      }
-    }, 1250);
-
-    return () => clearTimeout(timeOutId);
-  }, [gameState, currentQuestionIndex, quiz.length]);
-
-  if (gameState === "idle") {
-    return <StartScreen handleStart={startQuiz} />;
+  if (state.matches("idle")) {
+    return (
+      <StartScreen
+        handleStart={(options) =>
+          send({ type: "START", continent: options?.continent })
+        }
+      />
+    );
   }
 
-  if (gameState === "finished") {
+  if (state.matches("finished")) {
     return (
       <ResultsScreen
         score={score}
         totalQuestions={quiz.length}
-        handlePlayAgain={() => setGameState("idle")}
+        handlePlayAgain={() => send({ type: "RESTART" })}
       />
     );
   }
 
   return (
     <QuestionCard
-      question={quiz[currentQuestionIndex]}
-      questionNumber={currentQuestionIndex + 1}
+      question={currentQuestion}
+      questionNumber={index + 1}
       totalQuestions={quiz.length}
-      handleAnswer={handleAnswer}
-      isAnswered={gameState === "answered"}
-      selectedAnswer={selectedAnswer}
+      handleAnswer={(countryCode) =>
+        send({ type: "ANSWER", code: countryCode })
+      }
+      isAnswered={state.matches("answered")}
+      selectedAnswer={selected}
     />
   );
 };
