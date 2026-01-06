@@ -11,13 +11,13 @@ import {
 type ResultsScreenProps = {
   score: number;
   totalQuestions: number;
-  handlePlayAgain: () => void;
+  handleRestart: () => void;
 };
 
 export function ResultsScreen({
   score,
   totalQuestions,
-  handlePlayAgain,
+  handleRestart,
 }: ResultsScreenProps) {
   const percentage = Math.round((score / totalQuestions) * 100);
 
@@ -36,7 +36,7 @@ export function ResultsScreen({
         </div>
       </CardContent>
       <CardFooter>
-        <Button variant="outline" onClick={handlePlayAgain} className="w-full">
+        <Button variant="outline" onClick={handleRestart} className="w-full">
           Play Again
         </Button>
       </CardFooter>

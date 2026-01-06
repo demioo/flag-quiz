@@ -5,18 +5,6 @@ import { StartScreen } from "@/components/quiz/start-screen/start-screen";
 import { quizMachine } from "@/machines/quiz-machine";
 import { useMachine } from "@xstate/react";
 
-type GameState = "idle" | "playing" | "answered" | "finished";
-
-type StartQuizParams = {
-  continent?:
-    | "Africa"
-    | "Asia"
-    | "Europe"
-    | "North America"
-    | "Oceania"
-    | "South America";
-};
-
 export const Main = () => {
   const [state, send] = useMachine(quizMachine);
   const { quiz, index, score, selected } = state.context;
@@ -37,7 +25,7 @@ export const Main = () => {
       <ResultsScreen
         score={score}
         totalQuestions={quiz.length}
-        handlePlayAgain={() => send({ type: "RESTART" })}
+        handleRestart={() => send({ type: "RESTART" })}
       />
     );
   }
