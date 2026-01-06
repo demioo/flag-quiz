@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardHeader,
-  CardTitle,
+  CardContent,
   CardDescription,
   CardFooter,
-  CardContent,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 
 type ResultsScreenProps = {

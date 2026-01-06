@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import { CONTINENTS } from "@/lib/constants";
 import { Continent } from "@/types";

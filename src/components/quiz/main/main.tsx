@@ -1,9 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
-import { generateQuiz, type QuizQuestion } from "@/lib/utils";
-import { StartScreen } from "@/components/quiz/start-screen/start-screen";
 import { QuestionCard } from "@/components/quiz/question-card/question-card";
 import { ResultsScreen } from "@/components/quiz/results-screen/results-screen";
+import { StartScreen } from "@/components/quiz/start-screen/start-screen";
+import { generateQuiz, type QuizQuestion } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 type GameState = "idle" | "playing" | "answered" | "finished";
 
