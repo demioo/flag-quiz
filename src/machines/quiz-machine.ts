@@ -14,30 +14,31 @@ type Events =
   | { type: "ANSWER"; code: string }
   | { type: "RESTART" };
 
+const initialContext: Context = {
+  quiz: [],
+  index: 0,
+  score: 0,
+  selected: null,
+};
+
 export const quizMachine = setup({
   types: {
     context: {} as Context,
     events: {} as Events,
   },
   actions: {
+    resetContext: assign(() => initialContext),
+
     startQuiz: assign(({ event }) => {
       assertEvent(event, "START");
-
       const quiz = generateQuiz({ continent: event.continent });
-      return {
-        quiz,
-        index: 0,
-        score: 0,
-        selected: null,
-      };
+      return { quiz, index: 0, score: 0, selected: null };
     }),
 
     answer: assign(({ context, event }) => {
       assertEvent(event, "ANSWER");
-
       const currentQuestion = context.quiz[context.index];
       const correct = currentQuestion.correctCountry.code === event.code;
-
       return {
         selected: event.code,
         score: correct ? context.score + 1 : context.score,
@@ -55,27 +56,21 @@ export const quizMachine = setup({
 }).createMachine({
   id: "quiz",
   initial: "idle",
-  context: {
-    quiz: [],
-    index: 0,
-    score: 0,
-    selected: null,
+  context: initialContext,
+
+  on: {
+    RESTART: { target: ".idle", actions: "resetContext" },
   },
+
   states: {
     idle: {
       on: {
-        START: {
-          target: "playing",
-          actions: "startQuiz",
-        },
+        START: { target: "playing", actions: "startQuiz" },
       },
     },
     playing: {
       on: {
-        ANSWER: {
-          target: "answered",
-          actions: "answer",
-        },
+        ANSWER: { target: "answered", actions: "answer" },
       },
     },
     answered: {
@@ -90,12 +85,6 @@ export const quizMachine = setup({
         ],
       },
     },
-    finished: {
-      on: {
-        RESTART: {
-          target: "idle",
-        },
-      },
-    },
+    finished: {},
   },
 });
